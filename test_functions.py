@@ -2,12 +2,7 @@ import pytest
 from functions import *
 
 def geninputs():
-    inputs = ["10", "2", "5", "10"]
-    for item in inputs:
-        yield item
-
-def gendecimal():
-    inputs = ["0.8", "0.2"]
+    inputs = ["10", "2", "5", "10", "0.8", "0.2"]
     for item in inputs:
         yield item
 
@@ -18,18 +13,12 @@ def genzero():
 
 
 GEN = geninputs()
-@pytest.mark.parametrize("expected", ["5.0", "0.5"])
+@pytest.mark.parametrize("expected", ["5.0", "0.5", "4.0"])
 def test_divide(capsys, monkeypatch, expected):
     monkeypatch.setattr('builtins.input', lambda _: next(GEN))
     divide()
     captured_stdout, captured_stderr = capsys.readouterr()
     assert captured_stdout.strip().rsplit(" ", 1)[1] == expected
-
-GEND = gendecimal()
-def test_divide_decimal(monkeypatch):
-    monkeypatch.setattr('builtins.input', lambda _: next(GEND))
-    with pytest.raises(ValueError):
-        divide()
 
 GENZ = genzero()
 def test_divide_zero(monkeypatch):
@@ -37,7 +26,7 @@ def test_divide_zero(monkeypatch):
     with pytest.raises(ZeroDivisionError):
         divide()
 
-@pytest.mark.parametrize("values, expected", [(9, 3), (23, 4.795831523312719), (0.64, 0.8)])
+@pytest.mark.parametrize("values, expected", [(9, 3), (0.64, 0.8)])
 def test_sq(values, expected):
     assert sq(values) == expected
 
@@ -45,6 +34,11 @@ def test_sq(values, expected):
 def test_sq_negative(values):
     with pytest.raises(ValueError):
         sq(values)
+
+@pytest.mark.parametrize("values", [("25")])
+def test_sq_string(values):
+    with pytest.raises(TypeError):
+        sq(values)     
 
 @pytest.mark.parametrize("first, middle, last, expected", [("John", "Isaac", "Dyess", "Hello!\nWelcome to the program John Isaac Dyess\nGlad to have you!"), ("", "", "", "Hello!\nWelcome to the program   \nGlad to have you!")])
 def test_greetUser(capsys, first, middle, last, expected):

@@ -34,8 +34,8 @@ def isPalindrome(temp):
 ## has input to receive two numbers
 ## divides the two, then outputs the result
 def divide():
-    num1 = int(input("Enter a number: "))
-    num2 = int(input("Enter another number: "))
+    num1 = float(input("Enter a number: "))
+    num2 = float(input("Enter another number: "))
 
     div = num1 / num2
 
