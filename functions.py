@@ -34,16 +34,36 @@ def isPalindrome(temp):
 ## has input to receive two numbers
 ## divides the two, then outputs the result
 def divide():
-    num1 = float(input("Enter a number: "))
-    num2 = float(input("Enter another number: "))
+    num1 = input("Enter a number: ")
+    num2 = input("Enter another number: ")
 
-    div = num1 / num2
-
-    print("Your numbers divided is:", div)
+    try:
+        num1 = float(num1)
+        num2 = float(num2)
+    except:
+        print("Please enter a valid number to divide.")
+        raise TypeError("int or float input only")
+    
+    try:
+        div = num1 / num2
+        print("Your numbers divided is:", div)
+    except:
+        print("Numbers cannot be divided by zero.")
+        raise ZeroDivisionError
+    
 
 ## returns the squareroot of a particular number
 def sq(num):
-    return math.sqrt(num)
+    if type(num) == int or type(num) == float:
+        try: 
+            square = math.sqrt(num)
+            return square
+        except:
+            print("Value must have a valid square root.")
+            raise ValueError("number does not have a valid square root.")
+    else:
+        print("Value entered must be a number.")
+        raise TypeError("value must be either int or float.")
 
 ## grabs user's name
 ## greets them by their entire name
@@ -54,9 +74,18 @@ def greetUser(first, middle, last):
         print("Welcome to the program", first, middle, last)
         print("Glad to have you!")
     else:
-        raise ValueError("name must be a string")
+        print("Names must be string values.")
+        raise ValueError("name must be string")
 
 ## takes in a Python list
 ## attempts to display the item at the index provided
 def displayItem(numbers, index):
-    print("Your item at", index, "index is", numbers[index])
+    if type(index) != int:
+        print("Index value must be an integer.")
+        raise TypeError("index must be integer")
+    try:
+        value = numbers[index]
+        print("Your item at", index, "index is", numbers[index])
+    except:
+        print("Index has a value that is larger than size of array.")
+        raise IndexError("index is in array")
